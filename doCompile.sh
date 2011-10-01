@@ -66,7 +66,6 @@ mmon.mk
   cp ./vendor/cyanogen/products/cyanogen_${device}.mk buildspec.mk
   echo "Getting ROMManager"
   ./vendor/cyanogen/get-rommanager
-  ./vendor/cyanogen/get-google-files
   cp -r ../proprietory/htc ./vendor/.
   echo -n "setting up environment ... "
   . build/envsetup.sh > /dev/null 2>&1
