@@ -59,6 +59,7 @@ compile()
   pushd $SOURCE > /dev/null 2>&1
 
   export CYANOGEN_NIGHTLY=1
+  export USE_CCACHE=1
 
   sed -i s/developerid=cyanogenmodnightly/developerid=cyanogenmodleonightly/g vendor/cyanogen/products/co
 mmon.mk
