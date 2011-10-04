@@ -23,9 +23,9 @@ export USER=$LOGNAME
 syncDirs()
 {
   echo -n "Synchronising directories ... "
-  rm -rf $SOURCE
-  mkdir $SOURCE
-  cp -alf $CM_DIR/* $SOURCE/.
+  #rm -rf $SOURCE
+  #mkdir $SOURCE
+  rsync -a --delete $CM_DIR/* $SOURCE/.
 
   #echo -n "leo ... "
   #pushd $SOURCE/device/htc/leo > /dev/null 2>&1
@@ -42,7 +42,9 @@ clean()
   echo -n "Cleaning up ... "
   pushd $SOURCE > /dev/null 2>&1
   make -j2 clean dataclean installclean > /dev/null 2>&1
-  rm -rf out > /dev/null 2>&1
+  rm -rf out/* > /dev/null 2>&1
+  umount out
+  mount -t tmpfs -o size=4196M tmpfs out
   mkdir out
   popd > /dev/null 2>&1
   echo "DONE"
