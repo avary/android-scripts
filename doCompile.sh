@@ -1,8 +1,8 @@
 #!/bin/bash
 
-LEO_URL=git://github.com/arif-ali/android_device_htc_leo.git
+LEO_URL=git://github.com/cmhtcleo/android_device_htc_leo.git
 
-LEO_DIR=/data/android/git/android_device_htc_leo
+LEO_DIR=/data/android/git/android_device_htc_leo_aa
 CM_DIR=/data/android/git/CM
 
 WORKDIR=/data/android/leo/CM
@@ -124,32 +124,37 @@ cat > $WORKDIR/RM/new.js << EOF
     "urls": ["http://cyanogenmod.arif-ali.co.uk/misc/3rdParty-20110811.zip"]
    },
    {
-    "name": "CWR 4.0.1.5",
-    "urls": ["http://cyanogenmod.arif-ali.co.uk/recoveries/recovery_4.0.1.5_leo_CWR.zip"]
+    "name": "CWR 5.0.2.3",
+    "urls": ["http://cyanogenmod.arif-ali.co.uk/recoveries/recovery_5.0.2.3_leo_CWR.zip"]
    }
    ],
    "choices": [{
      "name": "Kernel",
      "options": [{
        "name": "Main (charans)",
-       "url": "http://cyanogenmod.arif-ali.co.uk/cLK/charan_10022011_cLK_ppp_cache.zip"
+       "url": "http://cyanogenmod.arif-ali.co.uk/cLK/charan_10102011_cLK_ppp_cache.zip"
      },
      {
        "name": "tytung r11",
-       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/tytung_r11_charan_clk_20110831.zip"
+       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/tytung_r11_charan_clk_20111011.zip"
      },
      {
        "name": "tytung r12",
-       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/tytung_r12_charan_clk_20110919.zip"
+       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/tytung_r12_charan_clk_20111011.zip"
+     },
+     {
+       "name": "tytung r12.4_v3",
+       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/tytung_r12.4_v3_charan_clk_20111011.zip"
      },
      {
        "name": "rafpigna 1r9",
-       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/rafpigna_1r9_charan_clk_20110731.zip"
+       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/rafpigna_1r9_charan_clk_20111011.zip"
      },
      {
        "name": "rafpigna 2r0",
-       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/rafpigna_2r0_charan_clk_20110807.zip"
-     }]
+       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/rafpigna_2r0_charan_clk_20111011.zip"
+     }
+     ]
     }],
    "product": "cyanogenmodleonightly",
    "summary": "${date3}"
@@ -172,8 +177,8 @@ syncRepos()
   echo -n "Syncing latest repos ... "
   echo -n "leo ... "
   pushd $LEO_DIR > /dev/null 2>&1
-  #git pull > /dev/null 2>&1
-  #git pull $LEO_URL gingerbread > /dev/null 2>&1
+  git pull > /dev/null 2>&1
+  git pull $LEO_URL gingerbread > /dev/null 2>&1
   popd > /dev/null 2>&1
   echo "DONE"
 }
