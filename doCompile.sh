@@ -63,8 +63,7 @@ compile()
   export CYANOGEN_NIGHTLY=1
   export USE_CCACHE=1
 
-  sed -i s/developerid=cyanogenmodnightly/developerid=cyanogenmodleonightly/g vendor/cyanogen/products/co
-mmon.mk
+  sed -i s/developerid=cyanogenmodnightly/developerid=cyanogenmodleonightly/g vendor/cyanogen/products/common.mk
 
   cp ./vendor/cyanogen/products/cyanogen_${device}.mk buildspec.mk
   echo "Getting ROMManager"
