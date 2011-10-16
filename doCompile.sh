@@ -2,7 +2,7 @@
 
 LEO_URL=git://github.com/cmhtcleo/android_device_htc_leo.git
 
-LEO_DIR=/data/android/git/android_device_htc_leo_aa
+LEO_DIR=/data/android/git/android_device_htc_leo_cm
 CM_DIR=/data/android/git/CM
 
 WORKDIR=/data/android/leo/CM
@@ -131,28 +131,28 @@ cat > $WORKDIR/RM/new.js << EOF
    "choices": [{
      "name": "Kernel",
      "options": [{
-       "name": "Main (charans)",
-       "url": "http://cyanogenmod.arif-ali.co.uk/cLK/charan_10102011_cLK_ppp_cache.zip"
+       "name": "charans 10132011",
+       "url": "http://cyanogenmod.arif-ali.co.uk/cLK/charan_10132011_cLK_ppp_cache.zip"
      },
      {
        "name": "tytung r11",
-       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/tytung_r11_charan_clk_20111011.zip"
+       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/tytung_r11_charan_clk_20111013.zip"
      },
      {
        "name": "tytung r12",
-       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/tytung_r12_charan_clk_20111011.zip"
+       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/tytung_r12_charan_clk_20111013.zip"
      },
      {
        "name": "tytung r12.4_v3",
-       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/tytung_r12.4_v3_charan_clk_20111011.zip"
+       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/tytung_r12.4_v3_charan_clk_20111013.zip"
      },
      {
        "name": "rafpigna 1r9",
-       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/rafpigna_1r9_charan_clk_20111011.zip"
+       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/rafpigna_1r9_charan_clk_20111013.zip"
      },
      {
        "name": "rafpigna 2r0",
-       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/rafpigna_2r0_charan_clk_20111011.zip"
+       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/rafpigna_2r0_charan_clk_20111013.zip"
      }
      ]
     }],
