@@ -4,6 +4,7 @@ LEO_URL=git://github.com/cmhtcleo/android_device_htc_leo.git
 
 LEO_DIR=/data/android/git/android_device_htc_leo_cm
 CM_DIR=/data/android/git/CM
+KERN_DIR=/data/android/leo/CM/misc/kernels
 
 WORKDIR=/data/android/leo/CM
 OUTPUT=$WORKDIR/out
@@ -44,8 +45,8 @@ clean()
   make -j2 clean dataclean installclean > /dev/null 2>&1
   rm -rf out/* > /dev/null 2>&1
   umount out
-  mount -t tmpfs -o size=4196M tmpfs out
   mkdir out
+  mount -t tmpfs -o size=4196M tmpfs out
   popd > /dev/null 2>&1
   echo "DONE"
 }
@@ -123,35 +124,35 @@ cat > $WORKDIR/RM/new.js << EOF
     "urls": ["http://cyanogenmod.arif-ali.co.uk/misc/3rdParty-20110811.zip"]
    },
    {
-    "name": "CWR 5.0.2.3",
-    "urls": ["http://cyanogenmod.arif-ali.co.uk/recoveries/recovery_5.0.2.3_leo_CWR.zip"]
+    "name": "CWR 5.0.2.6",
+    "urls": ["http://cyanogenmod.arif-ali.co.uk/recoveries/recovery_5.0.2.6_leo_CWR.zip"]
    }
    ],
    "choices": [{
      "name": "Kernel",
      "options": [{
-       "name": "charans 10132011",
-       "url": "http://cyanogenmod.arif-ali.co.uk/cLK/charan_10132011_cLK_ppp_cache.zip"
+       "name": "charans ${date2}",
+       "url": "http://cyanogenmod.arif-ali.co.uk/cLK/charan_${date2}_cLK_ppp_cache.zip"
      },
      {
        "name": "tytung r11",
-       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/tytung_r11_charan_clk_20111013.zip"
+       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/tytung_r11_charan_clk_${date1}.zip"
      },
      {
        "name": "tytung r12",
-       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/tytung_r12_charan_clk_20111013.zip"
+       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/tytung_r12_charan_clk_${date1}.zip"
      },
      {
        "name": "tytung r12.4_v3",
-       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/tytung_r12.4_v3_charan_clk_20111013.zip"
+       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/tytung_r12.4_v3_charan_clk_${date1}.zip"
      },
      {
        "name": "rafpigna 1r9",
-       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/rafpigna_1r9_charan_clk_20111013.zip"
+       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/rafpigna_1r9_charan_clk_${date1}.zip"
      },
      {
        "name": "rafpigna 2r0",
-       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/rafpigna_2r0_charan_clk_20111013.zip"
+       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/rafpigna_2r0_charan_clk_${date1}.zip"
      }
      ]
     }],
@@ -182,7 +183,17 @@ syncRepos()
   echo "DONE"
 }
 
+doPatches()
+{
+  echo -n "Buildingg cLK and kernel patches ... "
+  pushd $KERN_DIR > /dev/null 2>&1
+  ./doKernels.sh > /dev/null 2>&1
+  popd > /dev/null 2>&1
+  echo "DONE"
+}
+
 syncRepos
 compile leo
 upload leo
+doPatches
 createManifest
