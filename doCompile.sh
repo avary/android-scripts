@@ -24,17 +24,11 @@ export USER=$LOGNAME
 syncDirs()
 {
   echo -n "Synchronising directories ... "
-  #rm -rf $SOURCE
-  #mkdir $SOURCE
-  rsync -a --delete $CM_DIR/* $SOURCE/.
+  mkdir -p $SOURCE
+  cp -al $CM_DIR/* $SOURCE/.
+  mkdir $SOURCE/out
+  mount -t tmpfs -o size=4608M tmpfs $SOURCE/out
 
-  #echo -n "leo ... "
-  #pushd $SOURCE/device/htc/leo > /dev/null 2>&1
-
-  #rm -rf *
-  #rsync -az $LEO_DIR/* .
-
-  popd  > /dev/null 2>&1
   echo "DONE"
 }
 
@@ -44,10 +38,9 @@ clean()
   pushd $SOURCE > /dev/null 2>&1
   make -j2 clean dataclean installclean > /dev/null 2>&1
   rm -rf out/* > /dev/null 2>&1
-  umount out
-  mkdir out
-  mount -t tmpfs -o size=4196M tmpfs out
+  umount out > /dev/null 2>&1
   popd > /dev/null 2>&1
+  rm -rf $SOURCE > /dev/null 2>&1
   echo "DONE"
 }
 
@@ -67,9 +60,13 @@ compile()
   sed -i s/developerid=cyanogenmodnightly/developerid=cyanogenmodleonightly/g vendor/cyanogen/products/common.mk
 
   cp ./vendor/cyanogen/products/cyanogen_${device}.mk buildspec.mk
+  cp ../out/update-cm-20111031.zip leo_update.zip
   echo "Getting ROMManager"
   ./vendor/cyanogen/get-rommanager
-  cp -r ../proprietory/htc ./vendor/.
+  #cp -r ../proprietory/htc ./vendor/.
+  pushd device/htc/leo > /dev/null 2>&1
+  ./unzip-files.sh > /dev/null 2>&1
+  popd > /dev/null 2>&1
   echo -n "setting up environment ... "
   . build/envsetup.sh > /dev/null 2>&1
   echo -n "running brunch ... "
@@ -121,7 +118,7 @@ cat > $WORKDIR/RM/new.js << EOF
    },
    {
     "name": "3rd Party",
-    "urls": ["http://cyanogenmod.arif-ali.co.uk/misc/3rdParty-20110811.zip"]
+    "urls": ["http://cyanogenmod.arif-ali.co.uk/misc/3rdParty-20111025.zip"]
    },
    {
     "name": "CWR 5.0.2.6",
@@ -197,3 +194,4 @@ compile leo
 upload leo
 doPatches
 createManifest
+clean
