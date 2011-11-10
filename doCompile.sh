@@ -63,7 +63,6 @@ compile()
   cp ../out/update-cm-20111031.zip leo_update.zip
   echo "Getting ROMManager"
   ./vendor/cyanogen/get-rommanager
-  #cp -r ../proprietory/htc ./vendor/.
   pushd device/htc/leo > /dev/null 2>&1
   ./unzip-files.sh > /dev/null 2>&1
   popd > /dev/null 2>&1
