@@ -2,7 +2,7 @@
 
 LEO_URL=git://github.com/cmhtcleo/android_device_htc_leo.git
 
-LEO_DIR=/data/android/git/android_device_htc_leo_cm
+LEO_DIR=/data/android/git/android_device_htc_leo
 CM_DIR=/data/android/git/CM
 KERN_DIR=/data/android/leo/CM/misc/kernels
 
@@ -132,20 +132,8 @@ cat > $WORKDIR/RM/new.js << EOF
        "url": "http://cyanogenmod.arif-ali.co.uk/cLK/charan_${date2}_cLK_ppp_cache.zip"
      },
      {
-       "name": "tytung r11",
-       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/tytung_r11_charan_clk_${date1}.zip"
-     },
-     {
-       "name": "tytung r12",
-       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/tytung_r12_charan_clk_${date1}.zip"
-     },
-     {
-       "name": "tytung r12.4_v3",
-       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/tytung_r12.4_v3_charan_clk_${date1}.zip"
-     },
-     {
-       "name": "rafpigna 1r9",
-       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/rafpigna_1r9_charan_clk_${date1}.zip"
+       "name": "tytung r14",
+       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/tytung_r14_charan_clk_${date1}.zip"
      },
      {
        "name": "rafpigna 2r0",
@@ -174,8 +162,8 @@ syncRepos()
   echo -n "Syncing latest repos ... "
   echo -n "leo ... "
   pushd $LEO_DIR > /dev/null 2>&1
-  git pull > /dev/null 2>&1
-  git pull $LEO_URL gingerbread > /dev/null 2>&1
+  git remote update > /dev/null 2>&1
+  git co cmhtcleo/gingerbread > /dev/null 2>&1
   popd > /dev/null 2>&1
   echo "DONE"
 }
