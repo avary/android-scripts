@@ -2,7 +2,7 @@
 
 LEO_URL=git://github.com/cmhtcleo/android_device_htc_leo.git
 
-LEO_DIR=/data/android/git/android_device_htc_leo
+LEO_DIR=/data/android/git/android_device_htc_leo_cm
 CM_DIR=/data/android/git/CM
 KERN_DIR=/data/android/leo/CM/misc/kernels
 
@@ -162,7 +162,6 @@ syncRepos()
   echo -n "leo ... "
   pushd $LEO_DIR > /dev/null 2>&1
   git remote update > /dev/null 2>&1
-  git co cmhtcleo/gingerbread > /dev/null 2>&1
   popd > /dev/null 2>&1
   echo "DONE"
 }
