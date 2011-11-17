@@ -25,7 +25,7 @@ syncDirs()
 {
   echo -n "Synchronising directories ... "
   mkdir -p $SOURCE
-  cp -al $CM_DIR/* $SOURCE/.
+  rsync -a --del $CM_DIR/* $SOURCE/.
   mkdir $SOURCE/out
   mount -t tmpfs -o size=4608M tmpfs $SOURCE/out
 
@@ -40,7 +40,7 @@ clean()
   rm -rf out/* > /dev/null 2>&1
   umount out > /dev/null 2>&1
   popd > /dev/null 2>&1
-  rm -rf $SOURCE > /dev/null 2>&1
+  #rm -rf $SOURCE > /dev/null 2>&1
   echo "DONE"
 }
 
@@ -60,7 +60,7 @@ compile()
   sed -i s/developerid=cyanogenmodnightly/developerid=cyanogenmodleonightly/g vendor/cyanogen/products/common.mk
 
   cp ./vendor/cyanogen/products/cyanogen_${device}.mk buildspec.mk
-  cp ../out/update-cm-20111031.zip leo_update.zip
+  cp ../out/update-cm-20111117.zip leo_update.zip
   echo "Getting ROMManager"
   ./vendor/cyanogen/get-rommanager
   pushd device/htc/leo > /dev/null 2>&1
@@ -162,6 +162,7 @@ syncRepos()
   echo -n "leo ... "
   pushd $LEO_DIR > /dev/null 2>&1
   git remote update > /dev/null 2>&1
+  git co gingerbread > /dev/null 2>&1
   popd > /dev/null 2>&1
   echo "DONE"
 }
