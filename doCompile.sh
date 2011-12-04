@@ -48,8 +48,6 @@ compile()
 {
   device=$1
 
-  clean
-  syncDirs
 
   echo -n "Compiling image ... "
   pushd $SOURCE > /dev/null 2>&1
@@ -57,13 +55,15 @@ compile()
   export CYANOGEN_NIGHTLY=1
   export USE_CCACHE=1
 
-  sed -i s/developerid=cyanogenmodnightly/developerid=cyanogenmodleonightly/g vendor/cyanogen/products/common.mk
+  if [[ ${device} = "leo" ]] ; then
+    sed -i s/developerid=cyanogenmodnightly/developerid=cyanogenmodleonightly/g vendor/cyanogen/products/common.mk
+  fi 
 
   cp ./vendor/cyanogen/products/cyanogen_${device}.mk buildspec.mk
-  cp ../out/update-cm-20111117.zip leo_update.zip
+  cp ../out/${device}_update.zip ${device}_update.zip
   echo "Getting ROMManager"
   ./vendor/cyanogen/get-rommanager
-  pushd device/htc/leo > /dev/null 2>&1
+  pushd device/htc/${device} > /dev/null 2>&1
   ./unzip-files.sh > /dev/null 2>&1
   popd > /dev/null 2>&1
   echo -n "setting up environment ... "
@@ -74,7 +74,8 @@ compile()
   make -j 5 bacon
   echo "DONE"
 
-  cp out/target/product/leo/update-squished.zip $OUTPUT/update-cm-${date1}.zip
+  cp out/target/product/${device}/update-squished.zip $OUTPUT/update-cm7-${device}-${date1}.zip
+  rm -rf out/target/product/${device}
 
   popd > /dev/null 2>&1
 }
@@ -83,10 +84,13 @@ upload()
 {
   device=$1
 
-  cp $OUTPUT/update-cm-${date1}.zip /data/httpd/cm${device}nightly/rom/cm_${device}_full-${date1}.zip
+  mkdir -p /data/httpd/cm${device}nightly/rom
+  cp $OUTPUT/update-cm7-${device}-${date1}.zip /data/httpd/cm${device}nightly/rom/update-cm7-${device}-${date1}.zip
   pushd $OUTPUT
-  echo "\$ uploadnightly ${date1} " | ftp cmleonightly1.co.cc
-  echo "\$ uploadnightly ${date1} " | ftp cyanogenmod.arif-ali.co.uk
+  if [[ "${device}" = "leo" ]] ; then
+     echo "\$ uploadnightly ${device} ${date1} " | ftp cmleonightly1.co.cc
+  fi
+  echo "\$ uploadnightly ${device} ${date1} " | ftp cyanogenmod.arif-ali.co.uk
   popd
 }
 
@@ -104,9 +108,10 @@ cat > $WORKDIR/RM/new.js << EOF
   "modversion": "CyanogenMod-7-${date2}-NIGHTLY-LEO",
   "incremental": "${date1}",
   "name": "CM7 - Build #${date1}",
-  "urls": ["http://cyanogenmod.arif-ali.co.uk/rom/cm_leo_full-${date1}.zip",
-           "http://cmleonightly1.co.cc/rom/cm_leo_full-${date1}.zip"],
+  "urls": ["http://cyanogenmod.arif-ali.co.uk/rom/update-cm7-leo-${date1}.zip",
+           "http://cmleonightly1.co.cc/rom/update-cm7-leo-${date1}.zip"],
   "device": "leo",
+  "label": "CM-7",
   "addons": [{
     "name": "Google Apps 20110828",
     "urls": ["http://goo-inside.me/gapps/gapps-gb-20110828-signed.zip"]
@@ -120,8 +125,8 @@ cat > $WORKDIR/RM/new.js << EOF
     "urls": ["http://cyanogenmod.arif-ali.co.uk/misc/3rdParty-20111025.zip"]
    },
    {
-    "name": "CWR 5.0.2.6",
-    "urls": ["http://cyanogenmod.arif-ali.co.uk/recoveries/recovery_5.0.2.6_leo_CWR.zip"]
+    "name": "CWR 5.0.2.7",
+    "urls": ["http://cyanogenmod.arif-ali.co.uk/recoveries/recovery_5.0.2.7_leo_CWR.zip"]
    }
    ],
    "choices": [{
@@ -137,6 +142,10 @@ cat > $WORKDIR/RM/new.js << EOF
      {
        "name": "rafpigna 2r0",
        "url": "http://cyanogenmod.arif-ali.co.uk/kernels/rafpigna_2r0_charan_clk_${date1}.zip"
+     },
+     {
+       "name": "marc1706 cm 0.0.04l",
+       "url": "http://cyanogenmod.arif-ali.co.uk/kernels/marc1706_cm_0_0_4l_charan_clk_${date1}.zip"
      }
      ]
     }],
@@ -176,9 +185,13 @@ doPatches()
   echo "DONE"
 }
 
+clean
 syncRepos
+syncDirs
 compile leo
 upload leo
 doPatches
 createManifest
-clean
+compile galaxys2
+upload galaxys2
+#clean
