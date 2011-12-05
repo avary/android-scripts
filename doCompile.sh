@@ -46,7 +46,8 @@ clean()
 
 compile()
 {
-  device=$1
+  manufacturer=$1
+  device=$2
 
 
   echo -n "Compiling image ... "
@@ -63,7 +64,7 @@ compile()
   cp ../out/${device}_update.zip ${device}_update.zip
   echo "Getting ROMManager"
   ./vendor/cyanogen/get-rommanager
-  pushd device/htc/${device} > /dev/null 2>&1
+  pushd device/${manufacturer}/${device} > /dev/null 2>&1
   ./unzip-files.sh > /dev/null 2>&1
   popd > /dev/null 2>&1
   echo -n "setting up environment ... "
@@ -82,7 +83,8 @@ compile()
 
 upload()
 {
-  device=$1
+  manufacturer=$1
+  device=$2
 
   mkdir -p /data/httpd/cm${device}nightly/rom
   cp $OUTPUT/update-cm7-${device}-${date1}.zip /data/httpd/cm${device}nightly/rom/update-cm7-${device}-${date1}.zip
@@ -188,10 +190,10 @@ doPatches()
 clean
 syncRepos
 syncDirs
-compile leo
-upload leo
+compile htc leo
+upload htc leo
 doPatches
 createManifest
-compile galaxys2
-upload galaxys2
+compile samsung galaxys2
+upload samsung galaxys2
 #clean
