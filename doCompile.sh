@@ -102,7 +102,7 @@ MAIN=/data/dropbox/Dropbox/Public/RM.js
 
 if [[ ! `grep CyanogenMod-7-${date2}-NIGHTLY-LEO $MAIN` ]]
 then
-if [[ -e $OUTPUT/update-cm-${date1}.zip ]] 
+if [[ -e $OUTPUT/update-cm7-leo-${date1}.zip ]] 
 then
 
 cat > $WORKDIR/RM/new.js << EOF
@@ -194,6 +194,7 @@ compile htc leo
 upload htc leo
 doPatches
 createManifest
+clean
 compile samsung galaxys2
 upload samsung galaxys2
 #clean
