@@ -1,8 +1,5 @@
 #!/bin/bash
 
-LEO_URL=git://github.com/cmhtcleo/android_device_htc_leo.git
-
-LEO_DIR=/data/android/git/android_device_htc_leo_cm
 CM_DIR=/data/android/git/CM
 KERN_DIR=/data/android/leo/CM/misc/kernels
 
@@ -49,7 +46,6 @@ compile()
   manufacturer=$1
   device=$2
 
-
   echo -n "Compiling image ... "
   pushd $SOURCE > /dev/null 2>&1
 
@@ -79,6 +75,11 @@ compile()
   rm -rf out/target/product/${device}
 
   popd > /dev/null 2>&1
+
+  if [[ "${device}" = "leo" ]] ; then
+    doPatches
+    createManifest
+  fi
 }
 
 upload()
@@ -92,7 +93,7 @@ upload()
   if [[ "${device}" = "leo" ]] ; then
      echo "\$ uploadnightly ${device} ${date1} " | ftp cmleonightly1.co.cc
   fi
-  echo "\$ uploadnightly ${device} ${date1} " | ftp cyanogenmod.arif-ali.co.uk
+  rsync -az update-cm7-${device}-${date1}.zip arif-ali.co.uk:cmleonightly/rom/.
   popd
 }
 
@@ -167,20 +168,9 @@ fi
 fi
 }
 
-syncRepos()
-{
-  echo -n "Syncing latest repos ... "
-  echo -n "leo ... "
-  pushd $LEO_DIR > /dev/null 2>&1
-  git remote update > /dev/null 2>&1
-  git co gingerbread > /dev/null 2>&1
-  popd > /dev/null 2>&1
-  echo "DONE"
-}
-
 doPatches()
 {
-  echo -n "Buildingg cLK and kernel patches ... "
+  echo -n "Building cLK and kernel patches ... "
   pushd $KERN_DIR > /dev/null 2>&1
   ./doKernels.sh > /dev/null 2>&1
   popd > /dev/null 2>&1
@@ -188,13 +178,17 @@ doPatches()
 }
 
 clean
-syncRepos
-syncDirs
-compile htc leo
-upload htc leo
-doPatches
-createManifest
-clean
-compile samsung galaxys2
-upload samsung galaxys2
-#clean
+
+devices="htc_leo samsung_galaxys2"
+
+for phone in `echo $devices`
+do
+  syncDirs
+
+  manufact=`echo $phone | cut -d_ -f1`
+  device=`echo $phone | cut -d_ -f2`
+
+  compile $manufact $device
+  upload $manufact $device
+  clean
+done
