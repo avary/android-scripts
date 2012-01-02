@@ -179,7 +179,7 @@ doPatches()
 
 clean
 
-devices="htc_leo samsung_galaxys2"
+devices="htc_leo samsung_galaxys2 htc_click"
 
 for phone in `echo $devices`
 do
