@@ -60,9 +60,11 @@ compile()
   cp ../out/${device}_update.zip ${device}_update.zip
   echo "Getting ROMManager"
   ./vendor/cyanogen/get-rommanager
-  pushd device/${manufacturer}/${device} > /dev/null 2>&1
-  ./unzip-files.sh > /dev/null 2>&1
-  popd > /dev/null 2>&1
+  if [[ ${device} = "galaxys2" ]]; then
+    pushd device/${manufacturer}/${device} > /dev/null 2>&1
+    ./unzip-files.sh > /dev/null 2>&1
+    popd > /dev/null 2>&1
+  fi
   echo -n "setting up environment ... "
   . build/envsetup.sh > /dev/null 2>&1
   echo -n "running brunch ... "
@@ -72,14 +74,15 @@ compile()
   echo "DONE"
 
   cp out/target/product/${device}/update-squished.zip $OUTPUT/update-cm7-${device}-${date1}.zip
-  rm -rf out/target/product/${device}
-
-  popd > /dev/null 2>&1
 
   if [[ "${device}" = "leo" ]] ; then
     doPatches
     createManifest
   fi
+
+  rm -rf out/target/product/${device}
+
+  popd > /dev/null 2>&1
 }
 
 upload()
