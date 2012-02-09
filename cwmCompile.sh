@@ -1,11 +1,11 @@
 #!/bin/bash
 
 RECOVERY_URL=git://github.com/CyanogenMod/android_bootable_recovery.git
-LEO_URL=git://github.com/CyanogenMod/android_device_htc_leo.git
+#LEO_URL=git://github.com/CyanogenMod/android_device_htc_leo.git
 
-RECOVERY_DIR=/data/android/git/android_bootable_recovery
-LEO_DIR=/data/android/git/android_device_htc_leo_cm
-CM_DIR=/data/android/git/CM
+#RECOVERY_DIR=/data/android/git/android_bootable_recovery
+#LEO_DIR=/data/android/git/android_device_htc_leo
+CM_DIR=/data/android/git/CM-ics
 
 WORKDIR=/data/android/recovery
 OUTPUT=$WORKDIR/out
@@ -26,20 +26,20 @@ syncDirs()
   echo -n "Synchronising directories ... "
   cp -alf $CM_DIR/* $SOURCE/.
 
-  echo -n "Recovery ... "
-  pushd $SOURCE/bootable/recovery > /dev/null 2>&1
+ # echo -n "Recovery ... "
+ # pushd $SOURCE/bootable/recovery > /dev/null 2>&1
 
-  rm -rf *
-  rsync -az $RECOVERY_DIR/* .
+ # rm -rf *
+ # rsync -az $RECOVERY_DIR/* .
 
-  popd  > /dev/null 2>&1
+ # popd  > /dev/null 2>&1
   echo -n "leo ... "
-  pushd $SOURCE/device/htc/leo > /dev/null 2>&1
+ # pushd $SOURCE/device/htc/leo > /dev/null 2>&1
 
-  rm -rf *
-  rsync -az $LEO_DIR/* .
+ # rm -rf *
+ # rsync -az $LEO_DIR/* .
 
-  popd  > /dev/null 2>&1
+ # popd  > /dev/null 2>&1
   echo "DONE"
 }
 
@@ -56,8 +56,9 @@ clean()
 
 compile()
 {
-  device=$1
-  bootloader=$2
+  manufacturer=$1
+  device=$2
+  bootloader=$3
 
   clean
   syncDirs
@@ -68,17 +69,21 @@ compile()
   VERSION1=`grep RECOVERY_VERSION bootable/recovery/Android.mk  | head -n 1 | awk '{ print $NF }' | sed s/v//`
   VERSION2=$VERSION1
 
-  if [[ $NIGHTLY -eq 1 ]] ; then
+  #if [[ $NIGHTLY -eq 1 ]] ; then
     VERSION2=$VERSION1-`date +%Y%m%d`
-  fi
+  #fi
 
-  cp ./vendor/cyanogen/products/cyanogen_${device}.mk buildspec.mk
+  #cp ./vendor/cyanogen/products/cyanogen_${device}.mk buildspec.mk
   echo -n "setting up environment ... "
   . build/envsetup.sh > /dev/null 2>&1
   echo -n "running lunch ... "
-  lunch cyanogen_${device}-eng > /dev/null 2>&1
+  lunch cm_${device}-eng > /dev/null 2>&1
   echo -n "compiling recovery ... "
-  make -j2 recoveryimage 2>&1 | tail -n 10
+  if [[ $manufacturer == "samsung" ]] ; then
+    make -j 5 bootimage
+  else
+    make -j 5 recoveryimage 2>&1 | tail -n 10
+  fi
   echo "DONE"
   
   popd > /dev/null 2>&1
@@ -88,8 +93,7 @@ compile()
     cp $SOURCE/out/target/product/${device}/recovery.img $WORKDIR/CWR/recovery_${device}.img
 
 cat > $WORKDIR/CWR/sdcard/clockworkmod/.settings << EOF
-{"paypal_transaction_id":"","is_clockworkmod":true,"current_recovery_version":"${VERSION1}","flash_recovery":"","detected_device":"leo","readonly_recovery":false,"recovery_timestamp":"`date +%s`
-","reboot_recovery":""}
+{"paypal_transaction_id":"","is_clockworkmod":true,"current_recovery_version":"${VERSION1}","flash_recovery":"","detected_device":"leo","readonly_recovery":false,"recovery_timestamp":"`date +%s`","reboot_recovery":""}
 EOF
 
 pushd $WORKDIR/CWR > /dev/null 2>&1
@@ -113,7 +117,6 @@ pushd $WORKDIR/CWR > /dev/null 2>&1
      cp $OUTPUT/*.img /data/dropbox/Dropbox/${device}/android/recovery/${VERSION1}/.
   else
      cp $OUTPUT/* /data/dropbox/Dropbox/${device}/android/recovery/${VERSION1}/.
-
   fi 
   chown -R dropbox:dropbox /data/dropbox/Dropbox/${device}/android/recovery/*
 }
@@ -122,14 +125,16 @@ echo -n "Syncing latest repos ... "
 echo -n "Recovery ... "
 pushd ${RECOVERY_DIR} > /dev/null 2>&1
 git pull > /dev/null 2>&1
-git pull ${RECOVERY_URL} gingerbread > /dev/null 2>&1
+git pull ${RECOVERY_URL} ics > /dev/null 2>&1
 popd > /dev/null 2>&1
 echo -n "leo ... "
 pushd ${LEO_DIR} > /dev/null 2>&1
 git pull > /dev/null 2>&1
-git pull ${LEO_URL} gingerbread > /dev/null 2>&1
+git pull ${LEO_URL} ics > /dev/null 2>&1
 popd > /dev/null 2>&1
 echo "DONE"
 
-compile leo
-compile click
+clean
+compile htc leo
+compile htc click
+#compile samsung galaxys2
