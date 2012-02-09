@@ -1,9 +1,9 @@
 #!/bin/bash
 
 CM_DIR=/data/android/git/CM
-KERN_DIR=/data/android/leo/CM/misc/kernels
+KERN_DIR=/data/android/leo/kernels
 
-WORKDIR=/data/android/leo/CM
+WORKDIR=/data/android/CM
 OUTPUT=$WORKDIR/out
 SOURCE=$WORKDIR/source
 

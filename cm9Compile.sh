@@ -2,7 +2,7 @@
 
 CM_DIR=/data/android/git/CM-ics
 
-WORKDIR=/data/android/leo/CM-ics
+WORKDIR=/data/android/CM-ics
 OUTPUT=$WORKDIR/out
 SOURCE=$WORKDIR/source
 
