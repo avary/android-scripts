@@ -1,0 +1,16 @@
+Defaults
+--------
+For these scripts to work, the following need to be taken into consideration
+especially with the memory requirements, otherwise the scripts to compile
+CM7 and CM9 will not work
+
+OS: ubuntu 10.04, Debian 6
+Memory: CM7 >= 6G, CM9 >= 15G
+
+1. /data/android/git -- All git repos and CM syncs
+2. /data/android/leo/CM -- Base compilation of CM7
+3. /data/android/leo/CM-ics -- Base compilation of CM9
+4. /data/android/recovery -- Base directory for compilation of CWM recovery
+
+
+more to follow ...

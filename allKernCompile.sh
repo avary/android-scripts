@@ -1,6 +1,8 @@
 #!/bin/bash
 
-for kernel in `ls | grep -v doKern`
+cp /data/android/leo/CM/source/out/target/product/leo/ramdisk.img .
+
+for kernel in `echo charan marc tytung rafpigna`
 do
 cd $kernel > /dev/null 2>&1
 ./script.sh
