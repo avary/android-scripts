@@ -11,6 +11,8 @@ date1=`date +%Y%m%d`
 date2=`date +%m%d%Y`
 date3=`date +%m-%d-%Y`
 
+numProcs=$(( `cat /proc/cpuinfo  | grep processor | wc -l` + 1 ))
+
 mkdir -p $OUTPUT
 mkdir -p $SOURCE
 
@@ -69,8 +71,8 @@ compile()
   . build/envsetup.sh > /dev/null 2>&1
   echo -n "running brunch ... "
   lunch cyanogen_${device}-eng
-  make -j 5 bootimage
-  make -j 5 bacon
+  make -j ${numProcs} bootimage
+  make -j ${numProcs} bacon
   echo "DONE"
 
   cp out/target/product/${device}/update-squished.zip $OUTPUT/update-cm7-${device}-${date1}.zip
