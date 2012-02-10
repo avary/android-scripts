@@ -76,8 +76,8 @@ compile()
     release="-magldr"
   fi
 
-  cp out/target/product/${device}/update-squished.zip $OUTPUT/update-cm9-${device}${release}-${date1}.zip
-  cp out/target/product/${device}/update-squished.zip /var/www/update-cm9-${device}${release}-${date1}.zip
+  cp out/target/product/${device}/update-cm-nightly-signed.zip $OUTPUT/update-cm9-${device}${release}-${date1}.zip
+  cp out/target/product/${device}/update-cm-nightly-signed.zip /var/www/update-cm9-${device}${release}-${date1}.zip
 
   if [[ "$device" == "leo" ]] 
   then
@@ -87,8 +87,8 @@ compile()
 
     make -j 5 bacon 
   
-    cp out/target/product/${device}/update-squished.zip $OUTPUT/update-cm9-${device}${release}-${date1}.zip
-    cp out/target/product/${device}/update-squished.zip /var/www/update-cm9-${device}${release}-${date1}.zip
+    cp out/target/product/${device}/update-cm-9-*-NIGHTLY-*-signed.zip $OUTPUT/update-cm9-${device}${release}-${date1}.zip
+    cp out/target/product/${device}/update-cm-9-*-NIGHTLY-*-signed.zip /var/www/update-cm9-${device}${release}-${date1}.zip
   fi 
 
   popd > /dev/null 2>&1
