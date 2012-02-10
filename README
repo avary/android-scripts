@@ -16,6 +16,7 @@ Memory: CM7 >= 6G, CM9 >= 15G
 * /data/android/toolchain -- The different revisions of toolchain
 * /data/android/kernels -- custom kernels for compilation puposes
 * /data/androidsdk -- Full android SDK
+* /usr/local/bin -- All binaries for x86 that are compiled by CM7
 
 
 
